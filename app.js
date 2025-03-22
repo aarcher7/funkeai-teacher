@@ -482,6 +482,78 @@ app.delete('/api/notebooks/:notebookId', authenticate, async (req, res) => {
   }
 });
 
+// Initialize migration endpoint to import existing JSON data
+app.post('/api/migrate', authenticate, async (req, res) => {
+  try {
+    const userEmail = req.user.email;
+    const { notebooks } = req.body;
+    
+    // Check if user should be allowed to migrate data
+    if (!(await isTeacher(userEmail))) {
+      // Register this first user as a teacher (useful for initial setup)
+      const userKey = datastore.key(USER_KIND);
+      const userEntity = {
+        key: userKey,
+        data: {
+          email: userEmail,
+          role: 'teacher',
+          createdAt: new Date().toISOString()
+        }
+      };
+      await datastore.save(userEntity);
+    }
+    
+    if (!notebooks || !Array.isArray(notebooks)) {
+      // Try to convert a single playlist to a notebook
+      const { playlist, name } = req.body;
+      if (playlist && Array.isArray(playlist)) {
+        // Create a notebook from the playlist
+        const key = datastore.key(NOTEBOOK_KIND);
+        const notebookEntity = {
+          key: key,
+          data: {
+            name: name || 'Default Notebook',
+            playlist: playlist,
+            createdBy: userEmail,
+            updatedAt: new Date().toISOString()
+          }
+        };
+        await datastore.save(notebookEntity);
+        return res.json({ 
+          success: true, 
+          message: 'Single playlist migrated successfully'
+        });
+      }
+      return res.status(400).json({ error: 'Invalid migration data format' });
+    }
+    
+    // Handle multiple notebooks migration
+    for (const notebook of notebooks) {
+      if (!notebook.name || !notebook.playlist) continue;
+      
+      const key = datastore.key(NOTEBOOK_KIND);
+      const notebookEntity = {
+        key: key,
+        data: {
+          name: notebook.name,
+          playlist: notebook.playlist,
+          createdBy: userEmail,
+          updatedAt: new Date().toISOString()
+        }
+      };
+      await datastore.save(notebookEntity);
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Migration completed successfully'
+    });
+  } catch (error) {
+    console.error('Error during migration:', error);
+    res.status(500).json({ error: 'Failed to migrate data' });
+  }
+});
+
 // Start the server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

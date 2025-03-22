@@ -23,6 +23,7 @@ This application consists of two main components:
 - `app.yaml` - Google App Engine configuration
 - `package.json` - Node.js project dependencies
 - `index.html` - Frontend UI for teachers
+- `migrate.js` - Script to migrate existing JSON data to the database
 - `chrome-extension-guide.md` - Guide for updating the Chrome extension
 - `README.md` - This file
 
@@ -71,13 +72,25 @@ This application consists of two main components:
 npm install
 ```
 
-### Step 4: Deploy to Google App Engine
+### Step 4: Migrate Existing Data (Optional)
+
+If you have existing JSON data:
+
+```bash
+node migrate.js
+```
+
+When prompted, enter:
+- The path to your JSON file (e.g., `instructions.json`)
+- The email address for the teacher account
+
+### Step 5: Deploy to Google App Engine
 
 ```bash
 gcloud app deploy
 ```
 
-### Step 5: Update Chrome Extension
+### Step 6: Update Chrome Extension
 
 Follow the instructions in `chrome-extension-guide.md` to update your Chrome extension to work with the new backend.
 
@@ -92,6 +105,7 @@ Follow the instructions in `chrome-extension-guide.md` to update your Chrome ext
 | `/api/progress/:notebookId` | GET | Get student progress | Yes |
 | `/api/progress/:notebookId` | POST | Update student progress | Yes |
 | `/api/users/register` | POST | Register a new teacher | Yes (admin only) |
+| `/api/migrate` | POST | Migrate data to database | Yes |
 
 ## Development
 
