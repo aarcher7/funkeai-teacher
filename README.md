@@ -21,7 +21,6 @@ This application consists of two main components:
 
 - `app.js` - Main Express application backend with API endpoints
 - `app.yaml` - Google App Engine configuration
-- `index.yaml` - Datastore index configuration
 - `package.json` - Node.js project dependencies
 - `index.html` - Frontend UI for teachers
 - `chrome-extension-guide.md` - Guide for updating the Chrome extension
@@ -78,13 +77,7 @@ npm install
 gcloud app deploy
 ```
 
-### Step 5: Create Datastore Indexes
-
-```bash
-gcloud datastore indexes create index.yaml
-```
-
-### Step 6: Update Chrome Extension
+### Step 5: Update Chrome Extension
 
 Follow the instructions in `chrome-extension-guide.md` to update your Chrome extension to work with the new backend.
 
@@ -98,7 +91,7 @@ Follow the instructions in `chrome-extension-guide.md` to update your Chrome ext
 | `/api/notebooks/byName/:name` | GET | Get a notebook by name | Yes |
 | `/api/progress/:notebookId` | GET | Get student progress | Yes |
 | `/api/progress/:notebookId` | POST | Update student progress | Yes |
-| `/api/users/register` | POST | Register a new teacher | Yes |
+| `/api/users/register` | POST | Register a new teacher | Yes (admin only) |
 
 ## Development
 
@@ -115,7 +108,7 @@ The app will be available at http://localhost:8080
 ### Database Structure
 
 - **Notebooks**: Each notebook contains a name, a playlist of items, and metadata
-- **Users**: Stores user roles (teacher)
+- **Users**: Stores user roles (teacher/student)
 - **Progress**: Tracks student completion status for items in notebooks
 
 ## Chrome Extension Integration
@@ -141,11 +134,3 @@ Detailed instructions are provided in `chrome-extension-guide.md`.
 - Advanced analytics on student progress
 - Integration with Google Classroom
 - Support for more interactive content types
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature-name`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin feature/your-feature-name`)
-5. Create a new Pull Request
