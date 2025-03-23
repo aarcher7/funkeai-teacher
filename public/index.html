@@ -301,7 +301,7 @@
 
         <!-- Main content area -->
         <div class="col-md-9">
-            <div id="notebookContent">
+            <div id="notebookContent" style="opacity:1; transition: opacity 0.5s ease-in-out;">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 id="currentNotebookName">Select a Notebook</h3>
                     <div>
@@ -311,10 +311,7 @@
                     </div>
                 </div>
 
-                <!-- Section title for cards -->
-                <h4 class="mb-3" style="font-size: 1.25rem;">Learning Experiences</h4>
-
-                <!-- Add new item form (renamed to "Add Resource") -->
+                <!-- Add new item form (renamed to "Add") -->
                 <div id="addItemForm" class="mb-4" style="display: none;">
                     <div class="d-flex gap-2">
                         <input type="text" id="newCommand" class="form-control" placeholder="Enter content">
@@ -325,9 +322,12 @@
                             <option value="Assignment">📝 Assignment</option>
                             <option value="Website">🌐 Website</option>
                         </select>
-                        <button class="btn btn-primary btn-lg btn-double" onclick="addItem()">Add Resource</button>
+                        <button class="btn btn-primary btn-lg btn-double" onclick="addItem()">Add</button>
                     </div>
                 </div>
+
+                <!-- Section title moved below the add item form -->
+                <h4 class="mb-3" style="font-size: 1.25rem;">Learning Experiences</h4>
 
                 <!-- Cards (Learning Experiences) -->
                 <div class="row" id="commandList">
@@ -399,6 +399,17 @@
     // API endpoints
     const API_BASE_URL = 'https://funkeai.uc.r.appspot.com/api';
     // const API_BASE_URL = 'http://localhost:8080/api';
+
+    // Fade animation helper for notebookContent
+    function fadeNotebookContent(callback) {
+        const container = document.getElementById('notebookContent');
+        container.style.transition = "opacity 0.5s ease-in-out";
+        container.style.opacity = 0;
+        setTimeout(() => {
+            callback();
+            container.style.opacity = 1;
+        }, 500);
+    }
 
     // Check for authentication on page load
     document.addEventListener('DOMContentLoaded', function() {
@@ -658,18 +669,20 @@
     }
 
     function selectNotebook(notebook) {
-        currentNotebook = notebook;
-        currentPlaylist = notebook.playlist || [];
-        document.getElementById('currentNotebookName').textContent = notebook.name;
-        document.getElementById('addItemForm').style.display = 'block';
-        document.getElementById('exportButton').style.display = 'block';
-        displayItems(currentPlaylist);
-        const notebookItems = document.querySelectorAll('.notebook-item');
-        notebookItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.textContent.replace('×','').trim().includes(notebook.name)) {
-                item.classList.add('active');
-            }
+        fadeNotebookContent(() => {
+            currentNotebook = notebook;
+            currentPlaylist = notebook.playlist || [];
+            document.getElementById('currentNotebookName').textContent = notebook.name;
+            document.getElementById('addItemForm').style.display = 'block';
+            document.getElementById('exportButton').style.display = 'block';
+            displayItems(currentPlaylist);
+            const notebookItems = document.querySelectorAll('.notebook-item');
+            notebookItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent.replace('×','').trim().includes(notebook.name)) {
+                    item.classList.add('active');
+                }
+            });
         });
     }
 
@@ -720,7 +733,7 @@
             list.innerHTML = `
           <div class="col-12">
               <div class="alert alert-info">
-                  This notebook is empty. Add your first resource above!
+                  This notebook is empty. Add your first learning experience above!
               </div>
           </div>
         `;
