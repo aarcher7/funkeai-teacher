@@ -2,24 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NISU Teacher</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Funke AI - Learning Console</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
     <!-- Google Sign-In API -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
+        /* ---------------------
+           GENERAL/BODY
+        ----------------------*/
         body {
-            background-color: #5A91E6;
+            background: linear-gradient(135deg, #E9F3FF 0%, #FAFAFA 100%);
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
+            color: #333;
         }
-        /* Updated header background color and layout */
+
+        /* ---------------------
+           HEADER
+        ----------------------*/
         .header {
-            background: #3F72AF; /* New, softer blue */
-            color: white;
-            padding: 10px;
+            background: #ffffff;
+            color: #333;
+            padding: 10px 20px;
             position: fixed;
             top: 0;
             width: 100%;
@@ -27,9 +35,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 1px solid #ddd;
         }
-        /* Left, center, and right containers in header */
-        .header-left, .header-center, .header-right {
+        .header-left,
+        .header-center,
+        .header-right {
             display: flex;
             align-items: center;
         }
@@ -37,7 +47,6 @@
             flex: 1;
             justify-content: center;
         }
-        /* Increase the logo size by 30% (from 40px to 52px) */
         .header img {
             height: 52px;
             margin-right: 10px;
@@ -46,7 +55,8 @@
             margin: 0;
             font-size: 1.5rem;
         }
-        /* Save message styling */
+
+        /* Saved message styling (green bubble) */
         .save-message {
             display: none;
             background: #28a745;
@@ -60,18 +70,17 @@
             top: 10px;
             opacity: 0;
         }
-        .card {
-            background: #83B6FF !important;
-        }
-        /* Spacer div to push content below the fixed header */
+
+        /* ---------------------
+           SPACER
+        ----------------------*/
         .spacer {
             height: 60px;
         }
-        /* Double horizontal padding for the "Add Item" button */
-        .btn-double {
-            padding-left: 2rem !important;
-            padding-right: 2rem !important;
-        }
+
+        /* ---------------------
+           LOGIN CONTAINER
+        ----------------------*/
         #loginContainer {
             position: absolute;
             top: 50%;
@@ -83,9 +92,24 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             text-align: center;
         }
+        /* Responsive styling for the login image */
+        #loginContainer img {
+            width: 180px;
+            height: 154px;
+            max-width: 50%;
+            margin-bottom: 20px;
+        }
+        /* Center the Google Sign-In button */
+        .g_id_signin {
+            margin: 0 auto;
+        }
         #appContent {
             display: none;
         }
+
+        /* ---------------------
+           USER PROFILE
+        ----------------------*/
         .user-profile {
             display: flex;
             align-items: center;
@@ -97,54 +121,139 @@
             border-radius: 50%;
             margin-right: 8px;
         }
+
+        /* ---------------------
+           SIDEBAR
+        ----------------------*/
         .notebook-sidebar {
-            background: #4980C1;
+            background: #ffffff;
             padding: 20px;
             border-radius: 10px;
-            color: white;
+            color: #333;
             margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .notebook-sidebar h4 {
+            font-weight: bold;
+            color: #333;
         }
         .notebook-item {
             cursor: pointer;
             padding: 10px;
             margin: 5px 0;
-            border-radius: 5px;
+            border-radius: 8px;
             transition: background-color 0.2s;
+            background-color: #F7FAFD;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notebook-item span {
+            flex: 1;
         }
         .notebook-item:hover {
-            background-color: #3F72AF;
+            background-color: #D2BBFF;
         }
         .notebook-item.active {
-            background-color: #2E5EAA;
+            background-color: #D2BBFF;
             font-weight: bold;
         }
-        .progress-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #28a745;
-            color: white;
-            padding: 3px 8px;
+        .notebook-item button {
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        /* ---------------------
+           CARD STYLING
+        ----------------------*/
+        .card {
+            background: #ffffff !important;
+            border: none;
             border-radius: 10px;
-            font-size: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .card .card-body {
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* ---------------------
+           BUTTONS
+        ----------------------*/
+        .btn {
+            background-color: #D2BBFF !important;
+            border-color: #D2BBFF !important;
+            color: #333 !important;
+        }
+        .btn:hover,
+        .btn:focus,
+        .btn:active {
+            background-color: #D2BBFF !important;
+            border-color: #D2BBFF !important;
+            color: #333 !important;
+        }
+        .btn-danger {
+            background-color: #F2C7C7 !important;
+            border-color: #F2C7C7 !important;
+            color: #333 !important;
+        }
+        .btn-danger:hover,
+        .btn-danger:focus,
+        .btn-danger:active {
+            background-color: #F2C7C7 !important;
+            border-color: #F2C7C7 !important;
+            color: #333 !important;
+        }
+        .btn-double {
+            padding-left: 2rem !important;
+            padding-right: 2rem !important;
+        }
+
+        /* ---------------------
+           MODERN SELECT DROPDOWN
+        ----------------------*/
+        .form-select {
+            border-radius: 8px !important;
+            background-color: #fff !important;
+            border: 1px solid #ccc !important;
+            color: #333 !important;
+            padding: 8px 12px !important;
+            font-size: 1rem !important;
+        }
+        .form-select:focus {
+            outline: none !important;
+            box-shadow: 0 0 4px rgba(210, 187, 255, 0.5) !important;
+            border-color: #D2BBFF !important;
+        }
+
+        /* ---------------------
+           MODALS
+        ----------------------*/
+        .modal-content {
+            border-radius: 10px;
+        }
+        .modal-header,
+        .modal-footer {
+            border: none;
         }
     </style>
 </head>
 <body>
 <div class="header">
     <div class="header-left">
-        <img src="nisuext.png" alt="Logo">
+        <img src="funkeai.png" alt="Logo">
     </div>
     <div class="header-center">
-        <h1>NISU Teacher Updated</h1>
+        <h1>Funke AI Learning</h1>
     </div>
     <div class="header-right">
         <div id="userProfile" class="user-profile" style="display: none;">
             <img id="userAvatar" src="" alt="User">
             <span id="userName"></span>
         </div>
-        <button id="logoutButton" class="btn btn-outline-light" style="display: none;" onclick="handleSignOut()">Sign Out</button>
-        <button id="manageUsersBtn" class="btn btn-outline-light ms-2" style="display: none;">Manage Users</button>
+        <button id="logoutButton" class="btn btn-outline-dark" style="display: none;" onclick="handleSignOut()">Sign Out</button>
+        <button id="manageUsersBtn" class="btn btn-outline-dark ms-2" style="display: none;">Manage Users</button>
         <button id="saveButton" class="btn btn-success ms-2" onclick="saveChanges()" style="display: none;">Save Changes</button>
     </div>
     <div id="saveMessage" class="save-message">Saved!</div>
@@ -153,9 +262,10 @@
 <!-- Spacer to push content below the fixed header -->
 <div class="spacer"></div>
 
-<!-- Login container - shown before authentication -->
+<!-- Updated Login Container -->
 <div id="loginContainer">
-    <h2 class="mb-4">Welcome to NISU Teacher</h2>
+    <img src="funkeai.png" alt="FunkeAI Logo">
+    <h2 class="mb-4">Lets get Funke, please log in</h2>
     <p class="mb-4">Please sign in with your Google account to continue</p>
     <div id="g_id_onload"
          data-client_id="294376282666-lllnj1ro4d5qu3iq21nmmasr16tjije5.apps.googleusercontent.com"
@@ -188,11 +298,10 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Main content area -->
         <div class="col-md-9">
             <div id="notebookContent">
-                <!-- Current notebook header -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 id="currentNotebookName">Select a Notebook</h3>
                     <div>
@@ -201,23 +310,26 @@
                         </button>
                     </div>
                 </div>
-                
-                <!-- Add new item form (hidden until notebook is selected) -->
+
+                <!-- Section title for cards -->
+                <h4 class="mb-3" style="font-size: 1.25rem;">Learning Experiences</h4>
+
+                <!-- Add new item form (renamed to "Add Resource") -->
                 <div id="addItemForm" class="mb-4" style="display: none;">
                     <div class="d-flex gap-2">
                         <input type="text" id="newCommand" class="form-control" placeholder="Enter content">
                         <select id="contentType" class="form-select">
-                            <option value="Prompt">Prompt</option>
-                            <option value="Multimedia">Multimedia</option>
-                            <option value="Quiz">Quiz</option>
-                            <option value="Assignment">Assignment</option>
-                            <option value="Website">Website</option>
+                            <option value="Prompt">💬 Prompt</option>
+                            <option value="Multimedia">🎬 Multimedia</option>
+                            <option value="Quiz">❓ Quiz</option>
+                            <option value="Assignment">📝 Assignment</option>
+                            <option value="Website">🌐 Website</option>
                         </select>
-                        <button class="btn btn-primary btn-lg btn-double" onclick="addItem()">Add Item</button>
+                        <button class="btn btn-primary btn-lg btn-double" onclick="addItem()">Add Resource</button>
                     </div>
                 </div>
-                
-                <!-- Playlist items -->
+
+                <!-- Cards (Learning Experiences) -->
                 <div class="row" id="commandList">
                     <!-- Items will be populated here -->
                 </div>
@@ -271,62 +383,50 @@
     </div>
 </div>
 
-<!-- Add a button to open the modal in your header or sidebar -->
+<!-- Hidden manage users button (shown conditionally) -->
 <button id="manageUsersBtn" class="btn btn-outline-light ms-2" style="display: none;">Manage Users</button>
 
 <script>
     // Google Auth variables
     let userToken = '';
     let userData = null;
-    
+
     // App state variables
     let notebooks = [];
     let currentNotebook = null;
     let currentPlaylist = [];
-    
-    // API endpoints - Update with your deployed App Engine URL
+
+    // API endpoints
     const API_BASE_URL = 'https://funkeai.uc.r.appspot.com/api';
     // const API_BASE_URL = 'http://localhost:8080/api';
-    
+
     // Check for authentication on page load
     document.addEventListener('DOMContentLoaded', function() {
-        // Check if we already have a stored token
         const storedAuthData = localStorage.getItem('authData');
         if (storedAuthData) {
             try {
                 const authData = JSON.parse(storedAuthData);
                 if (authData.token && authData.expiry > Date.now()) {
-                    // Token exists and hasn't expired
                     userToken = authData.token;
                     userData = authData.user;
-                    
-                    // Display user info
                     document.getElementById('userAvatar').src = userData.picture;
                     document.getElementById('userName').textContent = userData.name;
                     document.getElementById('userProfile').style.display = 'flex';
                     document.getElementById('logoutButton').style.display = 'block';
-                    
-                    // Hide login, show app
                     document.getElementById('loginContainer').style.display = 'none';
                     document.getElementById('appContent').style.display = 'block';
-                    
-                    // Fetch notebooks
                     fetchNotebooks();
                     return;
                 }
             } catch (error) {
                 console.error('Error parsing stored auth data:', error);
             }
-            // If we got here, token was invalid or expired
             localStorage.removeItem('authData');
         }
-        
-        // No valid stored token, show login
         document.getElementById('loginContainer').style.display = 'block';
         document.getElementById('appContent').style.display = 'none';
     });
-    
-    // Handle first login (create user if needed)
+
     async function handleFirstLogin() {
         try {
             const response = await fetch(`${API_BASE_URL}/first-user`, {
@@ -335,145 +435,104 @@
                     'Authorization': `Bearer ${userToken}`
                 }
             });
-            
             if (!response.ok) {
                 const data = await response.json();
                 if (response.status === 403) {
-                    // Not authorized
                     alert('You are not authorized to access this application. Please contact an administrator.');
                     handleSignOut();
                     return false;
                 }
             }
-            
             return true;
         } catch (error) {
             console.error('Error handling first login:', error);
             return false;
         }
     }
-    
-    // Parse the JWT token
+
     function parseJwt(token) {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
+        const jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split('')
+                .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
         return JSON.parse(jsonPayload);
     }
-    
-    // Handle the Google Sign-In response
+
     async function handleCredentialResponse(response) {
-        // Get the token
         userToken = response.credential;
-        
-        // Decode the JWT token to get user information
         const decodedToken = parseJwt(userToken);
         userData = {
             name: decodedToken.name,
             email: decodedToken.email,
             picture: decodedToken.picture
         };
-        
-        // Check if this is a valid user
         const isAuthorized = await handleFirstLogin();
         if (!isAuthorized) return;
-        
-        // Store in localStorage with expiry
-        // Set expiry to slightly less than the token expiry (exp is in seconds)
-        const expiry = decodedToken.exp * 1000; // Convert to milliseconds
+        const expiry = decodedToken.exp * 1000;
         localStorage.setItem('authData', JSON.stringify({
             token: userToken,
             user: userData,
             expiry: expiry
         }));
-        
-        // Display user information
         document.getElementById('userAvatar').src = userData.picture;
         document.getElementById('userName').textContent = userData.name;
         document.getElementById('userProfile').style.display = 'flex';
         document.getElementById('logoutButton').style.display = 'block';
-        
-        // Hide login screen and show app content
         document.getElementById('loginContainer').style.display = 'none';
         document.getElementById('appContent').style.display = 'block';
-        
-        // Fetch the user's notebooks from the database
         fetchNotebooks();
     }
-    
-    // Sign out function
+
     function handleSignOut() {
         google.accounts.id.disableAutoSelect();
         userData = null;
         userToken = '';
-        
-        // Clear stored auth data
         localStorage.removeItem('authData');
-        
-        // Hide user profile and app content
         document.getElementById('userProfile').style.display = 'none';
         document.getElementById('logoutButton').style.display = 'none';
         document.getElementById('appContent').style.display = 'none';
-        
-        // Show login screen
         document.getElementById('loginContainer').style.display = 'block';
     }
 
-    // Show manage users button after login
     document.addEventListener('DOMContentLoaded', function() {
-        // Add this to your existing authentication check code
         if (localStorage.getItem('authData')) {
-            // Show manage users button for admins/teachers
             document.getElementById('manageUsersBtn').style.display = 'block';
         }
     });
 
-    // Add event listeners once DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
-        // Add the manage users button click event
         const manageUsersBtn = document.getElementById('manageUsersBtn');
         if (manageUsersBtn) {
             manageUsersBtn.addEventListener('click', showUserRegistrationModal);
         }
-        
-        // Add register button click event
         const registerTeacherBtn = document.getElementById('registerTeacherBtn');
         if (registerTeacherBtn) {
             registerTeacherBtn.addEventListener('click', registerNewTeacher);
         }
     });
 
-    // Function to show the user registration modal
     function showUserRegistrationModal() {
         const modal = new bootstrap.Modal(document.getElementById('userRegistrationModal'));
-        
-        // Clear previous values and messages - with null checks
         const emailInput = document.getElementById('teacherEmail');
         if (emailInput) emailInput.value = '';
-        
         const messageElement = document.getElementById('registrationMessage');
         if (messageElement) {
             messageElement.style.display = 'none';
             messageElement.textContent = '';
             messageElement.className = 'alert';
         }
-        
         modal.show();
     }
 
-    // Function to register a new teacher
-    // Function to register a new teacher
     async function registerNewTeacher() {
         const emailInput = document.getElementById('teacherEmail');
         const messageElement = document.getElementById('registrationMessage');
-        
-        // Reset message
         messageElement.style.display = 'none';
         messageElement.textContent = '';
-        
-        // Validate email
         const email = emailInput.value.trim();
         if (!email || !email.includes('@')) {
             messageElement.textContent = 'Please enter a valid email address.';
@@ -481,47 +540,31 @@
             messageElement.style.display = 'block';
             return;
         }
-        
         try {
-            // Get token from local storage
             const authData = JSON.parse(localStorage.getItem('authData'));
             if (!authData || !authData.token) {
                 throw new Error('You must be logged in to register teachers.');
             }
-            
-            // Send registration request
             const response = await fetch(`${API_BASE_URL}/users/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${authData.token}`
                 },
-                body: JSON.stringify({
-                    email: email,
-                    role: 'teacher'
-                })
+                body: JSON.stringify({ email, role: 'teacher' })
             });
-            
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Failed to register teacher.');
             }
-            
-            // Show success message
             messageElement.textContent = 'Teacher registered successfully!';
             messageElement.className = 'alert alert-success';
             messageElement.style.display = 'block';
-            
-            // Clear the form after success
             emailInput.value = '';
-            
-            // Automatically close the modal after 2 seconds
             setTimeout(() => {
                 bootstrap.Modal.getInstance(document.getElementById('userRegistrationModal')).hide();
             }, 2000);
-            
         } catch (error) {
-            // Show error message
             messageElement.textContent = error.message;
             messageElement.className = 'alert alert-danger';
             messageElement.style.display = 'block';
@@ -529,17 +572,12 @@
         }
     }
 
-    // Fetch all notebooks for the current user
     async function fetchNotebooks() {
         try {
             const response = await fetch(`${API_BASE_URL}/notebooks`, {
-                headers: {
-                    'Authorization': `Bearer ${userToken}`
-                }
+                headers: { 'Authorization': `Bearer ${userToken}` }
             });
-            
             if (!response.ok) {
-                // Handle first-time login with no notebooks
                 if (response.status === 404) {
                     notebooks = [];
                     displayNotebooks();
@@ -547,89 +585,63 @@
                 }
                 throw new Error('Failed to fetch notebooks.');
             }
-            
             const data = await response.json();
             notebooks = data.notebooks || [];
-            
-            // Display the notebooks
             displayNotebooks();
         } catch (error) {
             console.error(error);
             alert('Error fetching notebooks: ' + error.message);
         }
     }
-    
-    // Display the list of notebooks
+
     function displayNotebooks() {
         const notebookList = document.getElementById('notebookList');
         notebookList.innerHTML = '';
-        
         if (notebooks.length === 0) {
             notebookList.innerHTML = `
-                <div class="text-center p-3">
-                    <p>No notebooks found.</p>
-                    <p>Create your first notebook to get started!</p>
-                </div>
-            `;
+          <div class="text-center p-3">
+              <p>No notebooks found.</p>
+              <p>Create your first notebook to get started!</p>
+          </div>
+        `;
             return;
         }
-        
         notebooks.forEach(notebook => {
             const notebookItem = document.createElement('div');
-            notebookItem.className = 'notebook-item d-flex justify-content-between align-items-center';
-            
-            // Create the name span
+            notebookItem.className = 'notebook-item d-flex align-items-center';
             const nameSpan = document.createElement('span');
-            nameSpan.textContent = notebook.name;
+            nameSpan.textContent = "📗 " + notebook.name;
             nameSpan.style.cursor = 'pointer';
             nameSpan.onclick = () => selectNotebook(notebook);
-            
-            // Create delete button
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'btn btn-sm btn-danger';
             deleteBtn.innerHTML = '&times;';
-            deleteBtn.style.fontSize = '12px';
-            deleteBtn.style.marginLeft = '5px';
             deleteBtn.onclick = (e) => {
-                e.stopPropagation(); // Prevent opening the notebook when clicking delete
+                e.stopPropagation();
                 deleteNotebook(notebook);
             };
-            
-            // Add elements to the notebook item
             notebookItem.appendChild(nameSpan);
             notebookItem.appendChild(deleteBtn);
-            
             if (currentNotebook && notebook.name === currentNotebook.name) {
                 notebookItem.classList.add('active');
             }
-            
             notebookList.appendChild(notebookItem);
         });
     }
 
-    // Add this function to your script
     async function deleteNotebook(notebook) {
-        // Confirm deletion
-        if (!confirm(`Are you sure you want to delete the notebook "${notebook.name}"?`)) {
+        if (!confirm(`Are you sure you want to delete "${notebook.name}"?`)) {
             return;
         }
-        
         try {
             const response = await fetch(`${API_BASE_URL}/notebooks/${notebook.id || notebook.name}`, {
                 method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${userToken}`
-                }
+                headers: { 'Authorization': `Bearer ${userToken}` }
             });
-            
             if (!response.ok) {
                 throw new Error('Failed to delete notebook');
             }
-            
-            // Remove from the notebooks array
             notebooks = notebooks.filter(n => n.name !== notebook.name);
-            
-            // If the deleted notebook was the current one
             if (currentNotebook && currentNotebook.name === notebook.name) {
                 currentNotebook = null;
                 currentPlaylist = [];
@@ -638,54 +650,40 @@
                 document.getElementById('exportButton').style.display = 'none';
                 document.getElementById('commandList').innerHTML = '';
             }
-            
-            // Refresh the notebooks list
             displayNotebooks();
-            
         } catch (error) {
             console.error('Error deleting notebook:', error);
             alert('Error deleting notebook: ' + error.message);
         }
     }
-    
-    // Select a notebook and load its content
+
     function selectNotebook(notebook) {
         currentNotebook = notebook;
         currentPlaylist = notebook.playlist || [];
-        
-        // Update UI to show the current notebook
         document.getElementById('currentNotebookName').textContent = notebook.name;
         document.getElementById('addItemForm').style.display = 'block';
         document.getElementById('exportButton').style.display = 'block';
-        
-        // Display the notebook items
         displayItems(currentPlaylist);
-        
-        // Update the active notebook in the sidebar
         const notebookItems = document.querySelectorAll('.notebook-item');
         notebookItems.forEach(item => {
             item.classList.remove('active');
-            if (item.textContent === notebook.name) {
+            if (item.textContent.replace('×','').trim().includes(notebook.name)) {
                 item.classList.add('active');
             }
         });
     }
-    
-    // Show the new notebook modal
+
     function showNewNotebookModal() {
         const modal = new bootstrap.Modal(document.getElementById('newNotebookModal'));
         modal.show();
     }
-    
-    // Create a new notebook
+
     async function createNewNotebook() {
         const notebookName = document.getElementById('newNotebookName').value.trim();
-        
         if (!notebookName) {
             alert('Please enter a notebook name.');
             return;
         }
-        
         try {
             const response = await fetch(`${API_BASE_URL}/notebooks`, {
                 method: 'POST',
@@ -693,26 +691,14 @@
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${userToken}`
                 },
-                body: JSON.stringify({
-                    name: notebookName,
-                    playlist: []
-                })
+                body: JSON.stringify({ name: notebookName, playlist: [] })
             });
-            
             if (!response.ok) {
                 throw new Error('Failed to create notebook.');
             }
-            
-            // Close the modal
             bootstrap.Modal.getInstance(document.getElementById('newNotebookModal')).hide();
-            
-            // Clear the input
             document.getElementById('newNotebookName').value = '';
-            
-            // Refresh the notebooks list
             await fetchNotebooks();
-            
-            // Select the newly created notebook
             const newNotebook = notebooks.find(n => n.name === notebookName);
             if (newNotebook) {
                 selectNotebook(newNotebook);
@@ -723,50 +709,43 @@
         }
     }
 
-    // Generate a unique id for new items
     function generateUniqueId() {
         return 'id-' + Math.random().toString(36).substr(2, 9);
     }
 
-    // Display the list of items in the current notebook
     function displayItems(items) {
         const list = document.getElementById('commandList');
         list.innerHTML = '';
-        
         if (!items || items.length === 0) {
             list.innerHTML = `
-                <div class="col-12">
-                    <div class="alert alert-info">
-                        This notebook is empty. Add your first item above!
-                    </div>
-                </div>
-            `;
+          <div class="col-12">
+              <div class="alert alert-info">
+                  This notebook is empty. Add your first resource above!
+              </div>
+          </div>
+        `;
             return;
         }
-        
         items.forEach((item, index) => {
             const card = document.createElement('div');
             card.className = 'col-md-4 mb-3';
             card.setAttribute('data-index', index);
             card.innerHTML = `
-                <div class="card">
-                    <div class="card-body">
-                        <small class="text-muted">${item.id || ''}</small>
-                        <select class="form-select mb-2" onchange="updateType(${index}, this.value)">
-                            <option value="Prompt" ${item.type === 'Prompt' ? 'selected' : ''}>Prompt</option>
-                            <option value="Multimedia" ${item.type === 'Multimedia' ? 'selected' : ''}>Multimedia</option>
-                            <option value="Quiz" ${item.type === 'Quiz' ? 'selected' : ''}>Quiz</option>
-                            <option value="Assignment" ${item.type === 'Assignment' ? 'selected' : ''}>Assignment</option>
-                            <option value="Website" ${item.type === 'Website' ? 'selected' : ''}>Website</option>
-                        </select>
-                        <textarea class="form-control mb-2" rows="3" onchange="editItem(${index}, this.value)">${item.command}</textarea>
-                        <button class="btn btn-danger btn-sm" onclick="removeItem(${index})">Remove</button>
-                    </div>
-                </div>`;
+          <div class="card">
+              <div class="card-body">
+                  <select class="form-select mb-2" onchange="updateType(${index}, this.value)">
+                      <option value="Prompt" ${item.type === 'Prompt' ? 'selected' : ''}>💬 Prompt</option>
+                      <option value="Multimedia" ${item.type === 'Multimedia' ? 'selected' : ''}>🎬 Multimedia</option>
+                      <option value="Quiz" ${item.type === 'Quiz' ? 'selected' : ''}>❓ Quiz</option>
+                      <option value="Assignment" ${item.type === 'Assignment' ? 'selected' : ''}>📝 Assignment</option>
+                      <option value="Website" ${item.type === 'Website' ? 'selected' : ''}>🌐 Website</option>
+                  </select>
+                  <textarea class="form-control mb-2" rows="3" onchange="editItem(${index}, this.value)">${item.command}</textarea>
+                  <button class="btn btn-danger btn-sm" onclick="removeItem(${index})">Remove</button>
+              </div>
+          </div>`;
             list.appendChild(card);
         });
-        
-        // Make the items sortable
         new Sortable(list, {
             animation: 150,
             onEnd: function (evt) {
@@ -778,64 +757,53 @@
         });
     }
 
-    // Add a new item to the current playlist
     function addItem() {
         if (!currentNotebook) {
             alert('Please select or create a notebook first.');
             return;
         }
-        
         const newCommand = document.getElementById('newCommand').value;
         const contentType = document.getElementById('contentType').value;
-        
         if (!newCommand.trim()) return;
-        
-        currentPlaylist.push({ 
-            id: generateUniqueId(), 
-            command: newCommand, 
-            type: contentType || 'Prompt' 
+        currentPlaylist.push({
+            id: generateUniqueId(),
+            command: newCommand,
+            type: contentType || 'Prompt'
         });
-        
         displayItems(currentPlaylist);
         document.getElementById('newCommand').value = '';
         showSaveButton();
     }
 
-    // Show the Save Changes button
     function showSaveButton() {
         document.getElementById('saveButton').style.display = 'block';
     }
 
-    // Edit an existing item
     function editItem(index, value) {
         currentPlaylist[index].command = value;
         showSaveButton();
     }
 
-    // Update the type for an item
     function updateType(index, value) {
         currentPlaylist[index].type = value;
         showSaveButton();
     }
 
-    // Remove an item
     function removeItem(index) {
         currentPlaylist.splice(index, 1);
         displayItems(currentPlaylist);
         showSaveButton();
     }
 
-    // Save the current notebook to the database
     async function saveChanges() {
         if (!currentNotebook) {
             alert('Please select or create a notebook first.');
             return;
         }
-        
         try {
             const response = await fetch(`${API_BASE_URL}/notebooks`, {
                 method: 'POST',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${userToken}`
                 },
@@ -844,29 +812,19 @@
                     playlist: currentPlaylist
                 })
             });
-            
             if (!response.ok) {
                 throw new Error('Failed to save changes to database.');
             }
-            
-            // Update the notebook in our local array
             const notebookIndex = notebooks.findIndex(n => n.name === currentNotebook.name);
             if (notebookIndex !== -1) {
                 notebooks[notebookIndex].playlist = currentPlaylist;
             }
-            
-            // Hide the Save Changes button
             document.getElementById('saveButton').style.display = 'none';
-            
-            // Show the save message
             const saveMsg = document.getElementById('saveMessage');
             saveMsg.style.display = 'block';
             saveMsg.style.opacity = '1';
-            
-            // After 2 seconds, fade out the message
             setTimeout(() => {
                 saveMsg.style.opacity = '0';
-                // Once fade-out is complete (after 0.5s), hide the message
                 setTimeout(() => {
                     saveMsg.style.display = 'none';
                 }, 500);
@@ -876,32 +834,24 @@
             alert('Error saving changes: ' + error.message);
         }
     }
-    
-    // Export the current notebook for Chrome Extension
+
     function exportNotebook() {
         if (!currentNotebook) {
             alert('Please select a notebook first.');
             return;
         }
-        
         try {
-            // Create a JSON blob
             const notebookData = {
                 name: currentNotebook.name,
                 playlist: currentPlaylist
             };
-            
             const blob = new Blob([JSON.stringify(notebookData, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            
-            // Create a download link
             const a = document.createElement('a');
             a.href = url;
             a.download = `${currentNotebook.name.replace(/\s+/g, '_')}.json`;
             document.body.appendChild(a);
             a.click();
-            
-            // Cleanup
             setTimeout(() => {
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
@@ -911,8 +861,7 @@
             alert('Error exporting notebook: ' + error.message);
         }
     }
-    
-    // Initialize Google Sign-In
+
     window.onload = function() {
         google.accounts.id.initialize({
             client_id: "294376282666-lllnj1ro4d5qu3iq21nmmasr16tjije5.apps.googleusercontent.com",
