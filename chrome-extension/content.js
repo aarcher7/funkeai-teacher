@@ -1,6 +1,6 @@
 (function () {
     try {
-        console.log("NISU Extension content script loaded.");
+        console.log("funke Extension content script loaded.");
 
         // Check if user is authenticated
         function checkAuthentication(callback) {
@@ -18,15 +18,15 @@
         }
 
         // Prevent duplicate injection.
-        if (document.getElementById("nisu-extension-overlay")) {
-            console.log("NISU extension already injected, exiting.");
+        if (document.getElementById("funke-extension-overlay")) {
+            console.log("funke extension already injected, exiting.");
             return;
         }
 
         // Create the overlay image.
         let img = document.createElement("img");
-        img.src = chrome.runtime.getURL("nisuext.png");
-        img.id = "nisu-extension-overlay";
+        img.src = chrome.runtime.getURL("funkeext.png");
+        img.id = "funke-extension-overlay";
         img.style.position = "fixed";
         img.style.bottom = "20px";
         img.style.right = "20px";
@@ -36,7 +36,7 @@
 
         // Create the talk bubble.
         let bubble = document.createElement("div");
-        bubble.id = "nisu-extension-bubble";
+        bubble.id = "funke-extension-bubble";
         bubble.style.position = "fixed";
         bubble.style.bottom = "130px";
         bubble.style.right = "20px";
@@ -59,7 +59,7 @@
             console.log("Authentication check complete:", isAuthenticated, userData);
             if (!isAuthenticated) {
                 // User is not authenticated, update bubble text
-                updateBubbleText("Click to sign in to NISU extension");
+                updateBubbleText("Click to sign in to funke extension");
                 
                 // When the overlay or bubble is clicked, open the popup
                 img.addEventListener("click", function() {
@@ -96,8 +96,8 @@
         // Load stored playlist and current index from chrome.storage.
         function loadPlaylist(callback) {
             console.log("Loading playlist from chrome.storage");
-            chrome.storage.local.get(["nisuPlaylist", "nisuCurrentIndex"], function (result) {
-                callback(result.nisuPlaylist || [], result.nisuCurrentIndex || 0);
+            chrome.storage.local.get(["funkePlaylist", "funkeCurrentIndex"], function (result) {
+                callback(result.funkePlaylist || [], result.funkeCurrentIndex || 0);
             });
         }
 
@@ -316,8 +316,8 @@
             });
             
             chrome.storage.local.set({ 
-                nisuPlaylist: processedPlaylist, 
-                nisuCurrentIndex: 0 
+                funkePlaylist: processedPlaylist, 
+                funkeCurrentIndex: 0 
             }, function() {
                 console.log("Static playlist stored");
                 updateBubbleText("Click me to start");
@@ -343,7 +343,7 @@
                 // First check authentication
                 checkAuthentication(function(isAuthenticated, userData) {
                     if (!isAuthenticated) {
-                        updateBubbleText("Please sign in to use NISU");
+                        updateBubbleText("Please sign in to use funke");
                         callback([], 0);
                         return;
                     }
@@ -366,8 +366,8 @@
                                 ];
                             }
                             
-                            chrome.storage.local.get(["nisuPlaylist", "nisuCurrentIndex"], function (result) {
-                                let storedPlaylist = result.nisuPlaylist || [];
+                            chrome.storage.local.get(["funkePlaylist", "funkeCurrentIndex"], function (result) {
+                                let storedPlaylist = result.funkePlaylist || [];
                                 let mergedPlaylist = mergePlaylist(newPlaylist, storedPlaylist);
                                 // Determine the first pending task index.
                                 let newIndex = mergedPlaylist.findIndex(item => item.status !== "complete");
@@ -387,8 +387,8 @@
                                     
                                     // Update the playlist in storage
                                     chrome.storage.local.set({ 
-                                        nisuPlaylist: mergedPlaylist, 
-                                        nisuCurrentIndex: newIndex 
+                                        funkePlaylist: mergedPlaylist, 
+                                        funkeCurrentIndex: newIndex 
                                     }, function () {
                                         console.log("Playlist updated in storage, index:", newIndex);
                                         callback(mergedPlaylist, newIndex);
@@ -478,12 +478,12 @@
         function showMediaPlayer(url) {
             console.log("Showing media player for URL:", url);
             // Hide the talk bubble when showing media.
-            let talkBubble = document.getElementById("nisu-extension-bubble");
+            let talkBubble = document.getElementById("funke-extension-bubble");
             if (talkBubble) {
                 talkBubble.style.display = "none";
             }
 
-            let mediaBubble = document.getElementById("nisu-extension-mediaBubble");
+            let mediaBubble = document.getElementById("funke-extension-mediaBubble");
             // Determine if this is an audio file.
             let isAudio = false;
             if (url.toLowerCase().endsWith(".wav") || (url.includes("drive.google.com/uc") && url.toLowerCase().includes("wav"))) {
@@ -492,7 +492,7 @@
 
             if (!mediaBubble) {
                 mediaBubble = document.createElement("div");
-                mediaBubble.id = "nisu-extension-mediaBubble";
+                mediaBubble.id = "funke-extension-mediaBubble";
                 mediaBubble.style.position = "fixed";
                 mediaBubble.style.right = "20px";
                 mediaBubble.style.background = "#fff";
@@ -518,7 +518,7 @@
                 // Add a close button.
                 let closeBtn = document.createElement("button");
                 closeBtn.innerText = "Close";
-                closeBtn.id = "nisu-media-close-btn";
+                closeBtn.id = "funke-media-close-btn";
                 closeBtn.style.position = "absolute";
                 closeBtn.style.top = "5px";
                 closeBtn.style.right = "5px";
@@ -526,7 +526,7 @@
                 closeBtn.addEventListener("click", function () {
                     mediaBubble.remove();
                     // Restore the talk bubble when the media player is closed.
-                    let talkBubble = document.getElementById("nisu-extension-bubble");
+                    let talkBubble = document.getElementById("funke-extension-bubble");
                     if (talkBubble) {
                         talkBubble.style.display = "block";
                     }
@@ -536,7 +536,7 @@
             } else {
                 // Remove previous content (preserve the close button).
                 Array.from(mediaBubble.children).forEach(child => {
-                    if (child.id !== "nisu-media-close-btn") {
+                    if (child.id !== "funke-media-close-btn") {
                         mediaBubble.removeChild(child);
                     }
                 });
@@ -797,7 +797,7 @@
                         item.status = "complete";
                         updateProgress(notebookName, item.id, true, function () {
                             index++;
-                            chrome.storage.local.set({ nisuPlaylist: playlist, nisuCurrentIndex: index }, function () {
+                            chrome.storage.local.set({ funkePlaylist: playlist, funkeCurrentIndex: index }, function () {
                                 updateBubbleText("Click me for more");
                             });
                         });
@@ -847,6 +847,6 @@
         });
 
     } catch (error) {
-        console.error("Error in NISU Extension content script:", error);
+        console.error("Error in funke Extension content script:", error);
     }
 })();

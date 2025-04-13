@@ -124,7 +124,7 @@ function showUserView(userData) {
     loadingView.style.display = 'none';
     
     // Update user information
-    userAvatar.src = userData.picture || 'nisuext.png';
+    userAvatar.src = userData.picture || 'funkeext.png';
     userName.textContent = userData.name || 'User';
     userEmail.textContent = userData.email || '';
 }
@@ -157,7 +157,7 @@ function showUserView(userData) {
     loadingView.style.display = 'none';
     
     // Update user information
-    userAvatar.src = userData.picture || 'nisuext.png';
+    userAvatar.src = userData.picture || 'funkeext.png';
     userName.textContent = userData.name || 'User';
     userEmail.textContent = userData.email || '';
 }
@@ -170,7 +170,7 @@ function initiateGoogleSignIn() {
     
     // Open auth in a popup window
     const authUrl = `${API_BASE_URL}/auth/google`;
-    const authWindow = window.open(authUrl, 'NISU_Auth', 'width=600,height=600');
+    const authWindow = window.open(authUrl, 'funke_Auth', 'width=600,height=600');
     
     if (!authWindow) {
       loginStatus.textContent = 'Popup blocked! Please allow popups for this site.';
@@ -275,7 +275,7 @@ function displayNotebooks(notebooks) {
         notebookList.appendChild(item);
     });
 
-    statusMessage.textContent = 'Click on a notebook to activate the NISU helper.';
+    statusMessage.textContent = 'Click on a notebook to activate the funke helper.';
 }
 
 
